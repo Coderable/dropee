@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI Datepicker - Default functionality</title>
+  <link href="https://fonts.googleapis.com/css?family=Cormorant:400,600|Khula:300,400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <link rel="stylesheet" href="main.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript">
+  $( function() {
+    var dateFormat = "mm/dd/yy",
+      from = $( "#from" )
+        .datepicker({
+          minDate: 0,
+          numberOfMonths: 2
+        })
+        .on( "change", function() {
+          to.datepicker( "option", "minDate", getDate( this ) );
+        }),
+      to = $( "#to" ).datepicker({
+        numberOfMonths: 2
+      })
+      .on( "change", function() {
+        from.datepicker( "option", "maxDate", getDate( this ) );
+      });
+ 
+    function getDate( element ) {
+      var date;
+      try {
+        date = $.datepicker.parseDate( dateFormat, element.value );
+      } catch( error ) {
+        date = null;
+      }
+ 
+      return date;
+    }
+
+    document.getElementById("from").addEventListener("change", function() {
+	    var input = this.value;
+	    var dateEntered = new Date(input);
+	    console.log(input); //e.g. 2015-11-13
+	    console.log(dateEntered); //e.g. Fri Nov 13 2015 00:00:00 GMT+0000 (GMT Standard Time)
+
+	    alert(input);
+	});
+
+    $("#submit").click(function(){
+    	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    	var fromDate = $("#from").datepicker('getDate');
+    	var toDate = $("#to").datepicker('getDate');
+    	var diff = (((toDate-fromDate)/oneDay)+1);
+
+
+	  	$("#delta").html("<p>" + diff + " days</p>");
+	 })
+  });
+
+  
+  </script>
+</head>
+<body>
+
+<section id="home">
+	<div class="home-info">
+		<h2>Fulfill your aspiration</h2>
+		<p>Get lost. Astonished reminiscene. Experience it.</p>
+	</div>
+	<div class="home-input">
+		<p><input type="text" id="from" class="datepicker" placeholder="Check In date">
+			<i class="material-icons">compare_arrows</i>
+			<input type="text" id="to" class="datepicker" placeholder="Check Out date">
+		</p>
+	</div>
+	<button id="submit" value="submit">check</button>
+	<div id="delta"><p>2 days</p></div>
+</section>
+ 
+</body>
+</html>
